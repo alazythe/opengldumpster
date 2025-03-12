@@ -4,8 +4,14 @@
 #include <GLFW/glfw3.h>
 #include <ostream>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow* window) {
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, 1);
+    }
 }
 
 int main() {
@@ -23,7 +29,7 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
     if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
@@ -32,9 +38,11 @@ int main() {
 
     glViewport(0, 0, 800, 600);
 
-    while(glfwWindowShouldClose(window) == 0) {
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    while(glfwWindowShouldClose(window) == 0) { 
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        processInput(window);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
